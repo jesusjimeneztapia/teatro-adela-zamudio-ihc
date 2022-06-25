@@ -1,11 +1,5 @@
-import { Navbar, Container } from 'react-bootstrap'
+import AppRouter from './routes/AppRouter'
 
 export default function App() {
-  return ( 
-    <Navbar bg="light" expand="lg">
-      <Container>
-        <Navbar.Brand href="#home">Logo</Navbar.Brand>
-      </Container>
-    </Navbar>
-  )
+  return <AppRouter />
 }
