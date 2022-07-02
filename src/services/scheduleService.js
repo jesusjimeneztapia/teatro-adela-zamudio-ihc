@@ -1,5 +1,5 @@
 import { collection, getDocs } from 'firebase/firestore'
-import db from '../firebase/firebaseConfig'
+import { db } from '../firebase/firebaseConfig'
 
 export async function getSchedules(eventId) {
   const schedulesCollection = collection(db, `Eventos/${eventId}/Schedules`)
