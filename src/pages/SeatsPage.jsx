@@ -1,13 +1,16 @@
 import Page from '../components/Page'
-import { useParams } from 'react-router-dom'
+import Scenary from '../components/seats/Scenary'
+import SelectedDetails from '../components/seats/SelectedDetails'
+import { SeatsProvider } from '../components/seats/providers'
 
 export default function SeatsPage() {
-  const {eventId} = useParams()
-
   return (
     <Page>
       <h1>Seleccionar butacas</h1>
-      <p>Selección de butacas del evento '{eventId}'</p>
+      <SeatsProvider>
+        <Scenary />
+        <SelectedDetails />
+      </SeatsProvider>
     </Page>
   )
 }
