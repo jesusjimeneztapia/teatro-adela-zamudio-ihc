@@ -1,9 +1,16 @@
+import { useState } from 'react'
 import { Button, Col, Container, Row, Table } from 'react-bootstrap'
 import { AiFillDelete } from 'react-icons/ai'
+import PayModal from './PayModal'
 import { useSeats } from './providers'
 
 export default function SelectedDetails() {
   const { selected, day, togglePlace } = useSeats()
+  const [show, setShow] = useState(false)
+
+  const toggleShow = () => {
+    setShow(value => !value)
+  }
 
   return (
     <Container>
@@ -48,8 +55,9 @@ export default function SelectedDetails() {
                 </Table>
                 <div className='d-flex gap-3'>
                   <Button className='text-uppercase' onClick={() => alert('Reservar butacas')}>Reservar</Button>
-                  <Button className='text-uppercase' variant='success' onClick={() => alert('Comprar butacas')}>Comprar</Button>
+                  <Button className='text-uppercase' variant='success' onClick={toggleShow}>Comprar</Button>
                 </div>
+                <PayModal show={show} onHide={toggleShow} />
               </>
             ): <p className='text-muted text-center mt-3'>Seleccione alguna butaca</p>
           }
