@@ -3,8 +3,17 @@ import AuthForm from '../components/home/AuthForm'
 import AuthProviders from '../components/home/AuthProviders'
 import { AuthFormProvider } from '../components/home/providers'
 import Page from '../components/Page'
+import { useAuth } from '../contexts/providers/AuthProvider'
+import { Navigate } from 'react-router-dom'
+import ROUTES from '../routes/helper'
 
 export default function HomePage() {
+  const { logged } = useAuth()
+
+  if (logged) {
+    return <Navigate to={ROUTES.events()} replace={true} />
+  }
+
   return (
     <Page>
       <Container>
