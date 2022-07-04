@@ -8,7 +8,7 @@ function DayCustom({ day, dayNumber, onClick, checked }) {
       role='button'
       onClick={onClick}
     >
-      <span>{day}</span>
+      <span>{day}.</span>
       <span>{dayNumber}</span>
     </p>
   )

@@ -10,15 +10,23 @@ export async function getSchedules(eventId) {
 
   for(let i = 0; i < docs.length; i++) {
     const id = docs[i].id
-    const { Day, DayNumber } = docs[i].data()
+    const { date } = docs[i].data()
     const hoursCollection = collection(db, `Eventos/${eventId}/Schedules/${id}/Hours`)
     const hoursDocs = await getDocs(hoursCollection)
     const hours = hoursDocs.docs.map((doc) => {
       const { Hour } = doc.data()
       return { id: doc.id, hour: Hour }
+    }).sort(({hour: hour1}, {hour: hour2}) => new Date(`${date}-${hour1}`) - new Date(`${date}-${hour2}`))
+
+    const d = new Date(date)
+    const day = d.toLocaleDateString('es-ES', {
+      weekday: 'short'
     })
-    schedules = [...schedules, { day: Day, dayNumber: DayNumber, id, hours }]
+    const dayNumber = d.toLocaleDateString('es-ES', {
+      day: '2-digit'
+    })
+    schedules = [...schedules, { day, dayNumber, id, hours, date }]
   }
 
-  return schedules
+  return schedules.sort(({ date: date1 }, { date: date2 }) => new Date(date1) - new Date(date2))
 }

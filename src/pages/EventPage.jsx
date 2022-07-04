@@ -2,16 +2,20 @@ import Page from '../components/Page'
 import { Col, Image, ListGroup, Row } from 'react-bootstrap'
 import Information from '../components/event/Information'
 import Schedule from '../components/event/Schedule'
+import { useLocation } from 'react-router-dom'
 
 export default function EventPage() {
+  const { state: {title, imageURL, description, gender, duration, premiere, presentedBy} } = useLocation()
+
   return (
     <Page>
-      <h1>La Imilla precoz y el lobo feroz</h1>
+      <h1>{title}</h1>
       <Row>
         <Col md={12} lg={6} xl={7}>
-          <Image 
-            src='https://www.cronicaviva.com.pe/wp-content/uploads/2015/08/El-cumplea%C3%B1os-del-lobo-feroz.jpg'
-            alt='La Imilla precoz y el lobo feroz'
+          <Image
+            src={imageURL}
+            alt={title}
+            style={{minWidth: '100%', maxHeight: '50vh', objectFit: 'cover', objectPosition: 'top'}}
             fluid
             thumbnail
           />
@@ -20,12 +24,12 @@ export default function EventPage() {
           <ListGroup variant='flush'>
             <Information 
               title='descripción'
-              detail='Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eum, eveniet aliquid atque ullam maiores magni nesciunt, cum officia, tempore quidem ipsa. Quis eos amet quas hic iusto modi accusamus. Mollitia.'
+              detail={description}
             />
-            <Information title='género' detail='Dramático' />
-            <Information title='duración' detail='90 min.' />
-            <Information title='estreno' detail='11 de enero de 2022' />
-            <Information title='presentado por' detail='David Santalla' />
+            <Information title='género' detail={gender} />
+            <Information title='duración' detail={duration} />
+            <Information title='estreno' detail={premiere} />
+            <Information title='presentado por' detail={presentedBy} />
           </ListGroup>
         </Col>
       </Row>
