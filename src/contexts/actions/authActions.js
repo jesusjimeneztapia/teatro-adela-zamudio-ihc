@@ -6,5 +6,8 @@ export const AUTH_ACTIONS = {
   },
   logOut: () => {
     return AUTH_INITIAL_STATE
+  },
+  setRecentSearches: (state, recentSearches) => {
+    return { ...state, recentSearches }
   }
 }

@@ -5,7 +5,8 @@ export const AUTH_INITIAL_STATE = {
   id: null,
   email: null,
   photoURL: null,
-  displayName: null
+  displayName: null,
+  recentSearches: []
 }
 
 export function authReducer(state, { type, payload }) {

@@ -5,13 +5,13 @@ import { useEvents } from './providers'
 const genders = ['Todos', 'Danza', 'Música', 'Teatro']
 
 export default function Filter() {
-  const { filterEvents, gender: selectedGender, isLoading } = useEvents()
+  const { filterEvents, gender: selectedGender, isLoading, search } = useEvents()
 
   const handleSubmit = (e) => {
     e.preventDefault()
   }
 
-  if (isLoading) {
+  if (isLoading || search !== '') {
     return <></>
   }
 
