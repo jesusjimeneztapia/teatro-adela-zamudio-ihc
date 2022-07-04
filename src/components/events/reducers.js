@@ -3,7 +3,8 @@ import { EVENTS_ACTIONS } from './actions'
 export const EVENTS_INITIAL_STATE = {
   isLoading: true,
   events: [],
-  filteredEvents: []
+  filteredEvents: [],
+  gender: 'Todos'
 }
 
 export function eventsReducer(state, { type, payload }) {

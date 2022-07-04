@@ -1,4 +1,4 @@
-import { Col, Row } from 'react-bootstrap'
+import { Col, Row, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import ROUTES from '../../routes/helper'
 import EventCard from './EventCard'
@@ -6,7 +6,7 @@ import { useEvents } from './providers'
 
 export default function EventsList() {
   const navigate = useNavigate()
-  const { filteredEvents } = useEvents()
+  const { filteredEvents, isLoading } = useEvents()
 
   const handleClick = ({ id, title, imageURL, gender, duration, premiere, presentedBy, description }) => () => {
     navigate(ROUTES.event(id), {
@@ -20,6 +20,14 @@ export default function EventsList() {
         description
       }
     })
+  }
+
+  if (isLoading) {
+    return (
+      <div className='d-flex justify-content-center my-3'>
+        <Spinner animation='border' />
+      </div>
+    )
   }
 
   return (

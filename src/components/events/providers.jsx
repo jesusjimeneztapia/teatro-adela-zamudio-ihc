@@ -26,8 +26,8 @@ function useEventsProvider() {
 
   const filterEvents = (gender) => {
     const { events } = state
-    const filteredEvents = events.filter((event) => gender === event.gender)
-    dispatchState({ type: 'filteredEvents', payload: filteredEvents })
+    const filteredEvents = gender === 'Todos'? events: events.filter((event) => gender === event.gender)
+    dispatchState({ type: 'setFilteredEvents', payload: {gender, filteredEvents} })
   }
 
   return { ...state, filterEvents }
