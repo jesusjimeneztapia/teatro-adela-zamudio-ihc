@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, Col, Container, Row, Table } from 'react-bootstrap'
 import { AiFillDelete } from 'react-icons/ai'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/providers/AuthProvider'
 import ROUTES from '../../routes/helper'
 import PayModal from './PayModal'
@@ -9,6 +9,7 @@ import { useSeats } from './providers'
 
 export default function SelectedDetails() {
   const { pathname, state } = useLocation()
+  const navigate = useNavigate()
   const { logged } = useAuth()
   const { selected, day, title, togglePlace, hour } = useSeats()
   const [show, setShow] = useState(false)
@@ -59,7 +60,15 @@ export default function SelectedDetails() {
                   </tbody>
                 </Table>
                 <div className='d-flex gap-3'>
-                  <Button className='text-uppercase' onClick={() => alert('Reservar butacas')}>Reservar</Button>
+                  <Button
+                    className='text-uppercase'
+                    onClick={() => {
+                      alert('Butacas reservadas')
+                      navigate(ROUTES.events(), { replace: true })
+                    }}
+                  >
+                    Reservar
+                  </Button>
                   <Button className='text-uppercase' variant='success' onClick={toggleShow}>Comprar</Button>
                 </div>
                 <PayModal show={show} onHide={toggleShow} />
