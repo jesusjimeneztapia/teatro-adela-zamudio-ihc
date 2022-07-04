@@ -34,8 +34,8 @@ export default function SelectedDetails() {
                   </thead>
                   <tbody>
                     {
-                      selected.map(({ id, name }) => (
-                        <tr key={id}>
+                      selected.map(({ name }) => (
+                        <tr key={name}>
                           <td className='text-center'>{name.slice(0, name.length - 1)}</td>
                           <td className='text-center'>{name.at(-1)}</td>
                           <td className='text-center'>Bs42</td>

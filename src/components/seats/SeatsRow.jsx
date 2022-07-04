@@ -9,9 +9,9 @@ export default function SeatsRow({ places, row }) {
     <Container>
       <Row>
         {
-          places.map(({ id, name, state }) => (
-            <Col className='d-flex justify-content-center' xs={1} key={id}>
-              <Place name={name} state={state} onClick={() => togglePlace(name)} />
+          places.map(({ name, ...rest }) => (
+            <Col className='d-flex justify-content-center' xs={1} key={name}>
+              <Place name={name} {...rest} onClick={() => togglePlace(name)} />
             </Col>
           ))
         }

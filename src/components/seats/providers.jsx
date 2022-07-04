@@ -1,11 +1,13 @@
 import { createContext, useContext, useEffect, useReducer } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
+import { useAuth } from '../../contexts/providers/AuthProvider'
+import { setPlaceState } from '../../services/seatsService'
 import { seatsReducer, SEATS_INITIAL_STATE } from './reducers'
 
 const SeatsContext = createContext({
   ...SEATS_INITIAL_STATE,
   setScenary(scenary) {},
-  togglePlace(placeName) {}
+  async togglePlace(placeName) {}
 })
 
 export function useSeats() {
@@ -16,28 +18,36 @@ export function useSeats() {
 function useSeatsProvider() {
   const { eventId } = useParams()
   const { state: { scheduleId, hourId, day } } = useLocation()
+  const { logged, displayName } = useAuth()
   const [seats, dispatchSeats] = useReducer(seatsReducer, SEATS_INITIAL_STATE)
+
+  useEffect(() => {
+    let selected = []
+    Object.values(seats.scenary).forEach(row => {
+      selected = [...selected, ...row.filter(({ userName }) => !userName? false: displayName === userName)]
+    })
+    dispatchSeats({ type: 'update', payload: selected })
+  }, [seats.scenary, logged])
 
   const setScenary = (scenary) => {
     dispatchSeats({ type: 'setScenary', payload: scenary })
   }
 
-  const togglePlace = (placeName) => {
+  const togglePlace = async (placeName) => {
     const row = placeName.at(-1)
-    const { id, state } = seats.scenary[row].find(({ name }) => placeName === name)
-    if (state !== 'occupied') {
-      const { selected, scenary } = seats
-      let selectedUpdated = []
-      if (state === 'selected') {
-        selectedUpdated = selected.filter((place) => id !== place.id)
-      } else {
-        selectedUpdated = [...selected, { id, name: placeName, state: 'occupied' }]
+    const { scenary } = seats
+    const { state, userName } = scenary[row].find(({ name }) => placeName === name)
+    if (logged && state !== 'bought') {
+      if (state === 'available' || displayName === userName) {
+        await setPlaceState({ 
+          eventId,
+          hourId,
+          placeName,
+          row: scenary[row],
+          scheduleId,
+          userName: displayName,
+        })
       }
-      const places = scenary[row]
-      const placeIndex = places.findIndex((place) => id === place.id)
-      places[placeIndex] = { id, name: placeName, state: state === 'selected'? 'available': 'selected' }
-
-      dispatchSeats({ type: 'update', payload: { scenary: {...scenary, [row]: places}, selected: selectedUpdated } })
     }
   }
 

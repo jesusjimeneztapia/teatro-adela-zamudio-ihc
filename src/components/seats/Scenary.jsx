@@ -1,6 +1,7 @@
+import { collection, onSnapshot, query } from 'firebase/firestore'
 import { useEffect } from 'react'
 import { Col, Container, Row, Spinner } from 'react-bootstrap'
-import { getSeats } from '../../services/seatsService'
+import { db } from '../../firebase/firebaseConfig'
 import { useSeats } from './providers'
 import ScenaryFooter from './ScenaryFooter'
 import ScenaryHeader from './ScenaryHeader'
@@ -11,19 +12,26 @@ function useScenary() {
   const { eventId, scheduleId, hourId, setScenary, scenary, isLoading } = useSeats()
 
   useEffect(() => {
-    const request = async () => {
-      let scenary = await getSeats({ eventId, scheduleId, hourId })
-      scenary = scenary.reduce((prev, current) => {
-        const { name } = current
-        const row = name.at(-1)
-        let places = [...prev[row], current]
-        places = places.sort(({ name1 }, { name2 }) => name1 - name2)
-        return { ...prev, [row]: places }
-      }, { A: [], B: [], C: [], D: [], E: [], F: [], G: [], H: [], I: [] })
+    const seatsCollection = collection(db, `Eventos/${eventId}/Schedules/${scheduleId}/Hours/${hourId}/Seats`)
+    const q = query(seatsCollection)
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const scenary = {}
+      querySnapshot.forEach((doc) => {
+        const { name, places } = doc.data()
+        scenary[name] = places.map((place, index) => {
+          const placeName = `${index + 1}${name}`
+          if (typeof place === 'boolean') {
+            return { name: placeName, state: 'available' }
+          } else {
+            const [userName, state, date] = place.split(';')
+            return { name: placeName, userName, state, date: parseInt(date) } 
+          }
+        })
+      })
       setScenary(scenary)
-    }
+    })
 
-    if (eventId !== null && scheduleId !== null && hourId !== null) request()
+    return () => unsubscribe()
   }, [eventId, scheduleId, hourId])
 
   return { scenary, isLoading }

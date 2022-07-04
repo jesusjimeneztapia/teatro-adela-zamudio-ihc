@@ -12,6 +12,10 @@ export default function ScenaryFooter() {
         <span>Ocupado</span>
       </p>
       <p className='d-flex m-0 gap-2'>
+        <MdEventSeat className='text-warning' size={24} />
+        <span>Reservado</span>
+      </p>
+      <p className='d-flex m-0 gap-2'>
         <MdEventSeat className='text-danger' size={24} />
         <span>Seleccionado</span>
       </p>

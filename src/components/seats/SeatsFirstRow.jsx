@@ -9,9 +9,9 @@ export default function SeatsFirstRow({ placesLeft, placesRight, row }) {
     <Container>
       <Row>
         {
-          placesLeft.map(({ id, name, state }) => (
-            <Col className='d-flex justify-content-center' xs={1} key={id}>
-              <Place name={name} state={state} onClick={() => togglePlace(name)} />
+          placesLeft.map(({ name, ...rest }) => (
+            <Col className='d-flex justify-content-center' xs={1} key={name}>
+              <Place name={name} {...rest} onClick={() => togglePlace(name)} />
             </Col>
           ))
         }
@@ -19,9 +19,9 @@ export default function SeatsFirstRow({ placesLeft, placesRight, row }) {
           Array.from({ length: 7 }, (_, index) => index).map((value) => <Col xs={1} className='bg-secondary mt-3' key={value}></Col>)
         }
         {
-          placesRight.map(({ id, name, state }) => (
-            <Col className='d-flex justify-content-center' xs={1} key={id}>
-              <Place name={name} state={state} onClick={() => togglePlace(name)} />
+          placesRight.map(({ name, ...rest }) => (
+            <Col className='d-flex justify-content-center' xs={1} key={name}>
+              <Place name={name} {...rest} onClick={() => togglePlace(name)} />
             </Col>
           ))
         }
