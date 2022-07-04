@@ -19,6 +19,10 @@ export default function ScenaryFooter() {
         <MdEventSeat className='text-danger' size={24} />
         <span>Seleccionado</span>
       </p>
+      <p className='d-flex m-0 gap-2'>
+        <MdEventSeat className='text-info' size={24} />
+        <span>Comprado por ti</span>
+      </p>
     </div>
   )
 }

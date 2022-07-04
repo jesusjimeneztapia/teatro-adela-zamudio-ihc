@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import ROUTES from '../../routes/helper'
 import { scheduleReducer, SCHEDULE_INITIAL_STATE } from './reducers'
 
@@ -18,6 +18,7 @@ export function useSchedule() {
 function useScheduleProvider() {
   const navigate = useNavigate()
   const { eventId } = useParams()
+  const { state: { title } } = useLocation()
   const [schedule, dispatchSchedule] = useReducer(scheduleReducer, SCHEDULE_INITIAL_STATE)
 
   useEffect(() => {
@@ -26,7 +27,7 @@ function useScheduleProvider() {
       const { scheduleId, day, hour } = schedule
       navigate(ROUTES.seats(eventId), {
         state: {
-          scheduleId, day, hourId, hour
+          scheduleId, day, hourId, hour, title
         }
       })
     }

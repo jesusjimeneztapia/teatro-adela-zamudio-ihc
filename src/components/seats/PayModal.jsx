@@ -1,9 +1,10 @@
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js'
 import { useSeats } from './providers'
+import { buySeats } from '../../services/seatsService'
 
 export default function PayModal({ show, onHide }) {
-  const { selected } = useSeats()
+  const { selected, title, eventId, hourId, scheduleId } = useSeats()
   const stripe = useStripe()
   const elements = useElements()
 
@@ -16,6 +17,7 @@ export default function PayModal({ show, onHide }) {
     })
 
     if (!error) {
+      await buySeats({ eventId, hourId, scheduleId, selected })
       alert('El pago fue exitoso')
     }
   }
@@ -28,11 +30,12 @@ export default function PayModal({ show, onHide }) {
       <Modal.Body>
         <h5>Detalles de compra</h5>
         <p className='d-flex flex-column'>
+          <span><strong>Evento:</strong> {title}</span>
           <span><strong>Entradas:</strong> {selected.length}</span>
           <span><strong>Precio de entrada:</strong> Bs42</span>
           <span><strong>Monto total a pagar:</strong> Bs{selected.length * 42}</span>
         </p>
-        <h5>Información del pago</h5>
+        <h5>Información de la tarjeta</h5>
         <Form onSubmit={handleSubmit}>
           <Form.Group className='mb-3'>
             <Form.Label htmlFor='number'>Número de tarjeta</Form.Label>

@@ -9,6 +9,8 @@ export const SEATS_INITIAL_STATE = {
     name: null,
     number: null
   },
+  hour: null,
+  title: null,
   scenary: {
     A: [],
     B: [],

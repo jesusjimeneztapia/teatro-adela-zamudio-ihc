@@ -22,9 +22,19 @@ export default function Place({ name, state, userName, date, onClick }) {
   return (
     <span className='pb-1' onClick={onClick}>
       <MdEventSeat
-        className={`${state === 'available'? 'text-secondary': state === 'bought' ? 'text-black': displayName === userName? 'text-danger': 'text-warning'}`}
+        className={`${
+          state === 'available'?
+            'text-secondary': state === 'bought'?
+              displayName === userName?
+                'text-info':
+              'text-black':
+            displayName === userName?
+              'text-danger':
+            'text-warning'
+          }`
+        }
         title={ 
-          userName === displayName? `${showState()} por ti el ${showDate()}`
+          userName === displayName? `${name} ${showState()} por ti el ${showDate()}`
           : !userName? name: `${name} ${showState()} por ${userName} el ${showDate()}`
         }
         size={24}

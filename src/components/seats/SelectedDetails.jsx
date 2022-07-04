@@ -1,11 +1,16 @@
 import { useState } from 'react'
 import { Button, Col, Container, Row, Table } from 'react-bootstrap'
 import { AiFillDelete } from 'react-icons/ai'
+import { Link, useLocation } from 'react-router-dom'
+import { useAuth } from '../../contexts/providers/AuthProvider'
+import ROUTES from '../../routes/helper'
 import PayModal from './PayModal'
 import { useSeats } from './providers'
 
 export default function SelectedDetails() {
-  const { selected, day, togglePlace } = useSeats()
+  const { pathname, state } = useLocation()
+  const { logged } = useAuth()
+  const { selected, day, title, togglePlace, hour } = useSeats()
   const [show, setShow] = useState(false)
 
   const toggleShow = () => {
@@ -17,8 +22,8 @@ export default function SelectedDetails() {
       <Row>
         <Col className='mt-3' xs={12} lg={{offset: 2, span: 8}} xl={{offset: 3, span: 6}}>
           <div className='d-flex flex-wrap gap-2 justify-content-between'>
-            <strong>La Imilla precoz y el lobo feroz</strong>
-            <small className='d-block'>{day.name} {day.number}</small>
+            <strong>{title}</strong>
+            <small className='d-block'>{day.name} {day.number}, {hour}</small>
           </div>
           {
             selected.length > 0? (
@@ -59,8 +64,19 @@ export default function SelectedDetails() {
                 </div>
                 <PayModal show={show} onHide={toggleShow} />
               </>
-            ): <p className='text-muted text-center mt-3'>Seleccione alguna butaca</p>
-          }
+            ): <>
+              {
+                logged? (
+                  <p className='text-muted text-center mt-3'>Seleccione alguna butaca</p>
+                ): (
+                  <p className='d-flex flex-column align-items-center text-muted mt-3'>
+                    Debe Iniciar Sesión o Registrarse para reversar o comprar butacas.
+                    <Link to={ROUTES.home()} state={{ prev: pathname, ...state }}>Iniciar Sesión</Link>
+                  </p>
+                )
+              }
+              </>
+            }
         </Col>
       </Row>
     </Container>

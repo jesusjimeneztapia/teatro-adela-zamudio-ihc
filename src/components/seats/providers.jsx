@@ -17,14 +17,14 @@ export function useSeats() {
 
 function useSeatsProvider() {
   const { eventId } = useParams()
-  const { state: { scheduleId, hourId, day } } = useLocation()
+  const { state: { scheduleId, hourId, day, title, hour } } = useLocation()
   const { logged, displayName } = useAuth()
   const [seats, dispatchSeats] = useReducer(seatsReducer, SEATS_INITIAL_STATE)
 
   useEffect(() => {
     let selected = []
     Object.values(seats.scenary).forEach(row => {
-      selected = [...selected, ...row.filter(({ userName }) => !userName? false: displayName === userName)]
+      selected = [...selected, ...row.filter(({ userName, state }) => !userName? false: displayName === userName && state === 'reserved')]
     })
     dispatchSeats({ type: 'update', payload: selected })
   }, [seats.scenary, logged])
@@ -51,7 +51,7 @@ function useSeatsProvider() {
     }
   }
 
-  return { ...seats, eventId, scheduleId, hourId, day, setScenary, togglePlace }
+  return { ...seats, eventId, scheduleId, hourId, day, title, hour, setScenary, togglePlace }
 }
 
 export function SeatsProvider({ children }) {

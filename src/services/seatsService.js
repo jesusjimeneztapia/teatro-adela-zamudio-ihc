@@ -25,8 +25,26 @@ export async function setPlaceState({ userName, eventId, scheduleId, hourId, row
 
   places[placeIndex] = action === 'toggle'?
                         currentState === 'available'? `${userName};reserved;${Date.now()}`: true
-                        : `${userName};${newState};${Date.now()}`
+                        : `${userName};${action};${Date.now()}`
 
   await setDoc(rowDoc, { ...rest, places })
-  return places[placeIndex]
+}
+
+export async function buySeats({ eventId, scheduleId, hourId, selected }) {
+  const now = Date.now()
+  for(let i = 0; i < selected.length; i++) {
+    const { name, userName } = selected[i]
+    const row = name.at(-1)
+    const id = POSITIONS[row]
+    const rowDoc = doc(db, `Eventos/${eventId}/Schedules/${scheduleId}/Hours/${hourId}/Seats`, id)
+  
+    const currentRow = await getDoc(rowDoc)
+    const { places, ...rest } = currentRow.data()
+    const position = name.slice(0, name.length - 1) - 1
+    places[position] = `${userName};bought;${now}`
+    await setDoc(rowDoc, {
+      places,
+      ...rest
+    })
+  }
 }
