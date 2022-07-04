@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { createContext, useContext, useReducer } from 'react'
 import { auth } from '../../firebase/firebaseConfig'
+import { providerSignIn } from './auth'
 import { authFormReducer, AUTH_FORM_INITIAL_STATE } from './reducers'
 
 const AuthFormContext = createContext({

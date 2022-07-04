@@ -1,6 +1,7 @@
 import { Navbar, Container, Nav, SplitButton, Dropdown, Image, Button } from 'react-bootstrap'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/providers/AuthProvider'
+import { FaTheaterMasks } from 'react-icons/fa'
 import ROUTES from '../routes/helper'
 
 export default function Header() {
@@ -10,7 +11,14 @@ export default function Header() {
   return (
     <Navbar bg='light' expand='sm'>
       <Container>
-        <Navbar.Brand as={Link} to={ROUTES.home()}>Logo</Navbar.Brand>
+        <Navbar.Brand
+          className='d-flex align-items-center gap-2 fw-bold'
+          as={Link}
+          to={ROUTES.home()}
+        >
+          <FaTheaterMasks className='text-danger' size={32} />
+          Teatro Adela Zamudio
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='ms-auto'>
